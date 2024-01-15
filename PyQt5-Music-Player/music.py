@@ -53,11 +53,12 @@ from PyQt5.QtMultimedia import (
 class Window(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowTitle("PyQt5 Music Player")
+        self.setWindowTitle("Give Life Back To Music")
 
         # Set the background image
         self.backgroundImage = QImage("PyQt5-Music-Player/daft_punk.png")
         self.updateBackground()
+        self.setMinimumSize(800, 404)
 
         # Create some variables
         self.url = QUrl()
@@ -260,7 +261,6 @@ class Window(QMainWindow):
         widget.setLayout(container)
         self.setCentralWidget(widget)
 
-
     def updateBackground(self):
         sImage = self.backgroundImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
         palette = QPalette()
@@ -271,7 +271,6 @@ class Window(QMainWindow):
         self.updateBackground()
         super().resizeEvent(event)
 
-        
     # Volume control
     def _volume(self, val=70):
         self.player.setVolume(val)
