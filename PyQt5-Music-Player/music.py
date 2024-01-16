@@ -58,7 +58,6 @@ class Window(QMainWindow):
         # Set the background image
         self.backgroundImage = QImage("PyQt5-Music-Player/daft_punk.png")
         self.updateBackground()
-        self.setMinimumSize(800, 404)
 
         # Create some variables
         self.url = QUrl()
@@ -270,7 +269,7 @@ class Window(QMainWindow):
     def resizeEvent(self, event):
         self.updateBackground()
         super().resizeEvent(event)
-
+        
     # Volume control
     def _volume(self, val=70):
         self.player.setVolume(val)
