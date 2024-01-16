@@ -4,46 +4,38 @@ from googleapiclient.discovery import build
 import pandas as pd
 
 # Set up your YouTube Data API key
-with open("apikey.txt", "r") as file:
-    API_KEY = file.read().strip()
+API_KEY = "AIzaSyD5h1myju5oxuNDA1XDUaIKy_piFUfEPIU"
 
 
-def youtube_video_info(video_id, api_key):
+def get_playlist_id(playlist_url):
+    with youtube_dl.YoutubeDL() as ydl:
+        info_dict = ydl.extract_info(playlist_url, download=False)
+        return info_dict.get("id", "")
+
+
+def get_video_ids_from_playlist(playlist_id, api_key):
     youtube = build("youtube", "v3", developerKey=api_key)
-    request = youtube.videos().list(
-        part="snippet,contentDetails,statistics", id=video_id
+    request = youtube.playlistItems().list(
+        part="contentDetails", playlistId=playlist_id, maxResults=50
     )
     response = request.execute()
 
-    video_info = {
-        "title": response["items"][0]["snippet"]["title"]
-        if "items" in response and response["items"]
-        else "",
-        "description": response["items"][0]["snippet"]["description"]
-        if "items" in response and response["items"]
-        else "",
-        "duration": response["items"][0]["contentDetails"]["duration"]
-        if "items" in response and response["items"]
-        else "",
-        "views": int(response["items"][0]["statistics"]["viewCount"])
-        if "items" in response and response["items"]
-        else 0,
-        "genre": response["items"][0]["snippet"]["categoryId"]
-        if "items" in response and response["items"]
-        else "",
-        "upload_date": response["items"][0]["snippet"]["publishedAt"]
-        if "items" in response and response["items"]
-        else "",
-        # Add more details as needed
-    }
-
-    return video_info
+    video_ids = [item["contentDetails"]["videoId"] for item in response["items"]]
+    return video_ids
 
 
-def download_video(video_url, output_path):
+def download_playlist_videos(video_ids, output_path):
+    for video_id in video_ids:
+        video_info = youtube_video_info(video_id, API_KEY)
+        title = video_info.get("title", "")
+        video_url = f"https://www.youtube.com/watch?v={video_id}"
+        download_video(video_url, output_path, title)
+
+
+def download_video(video_url, output_path, title):
     ydl_opts = {
         "format": "bestaudio/best",
-        "outtmpl": os.path.join(output_path, "%(title)s.%(ext)s"),
+        "outtmpl": os.path.join(output_path, f"{title}.%(ext)s"),
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -60,19 +52,23 @@ def download_video(video_url, output_path):
             video_url = info_dict["url"]
             ydl.download([video_url])
         except youtube_dl.utils.DownloadError:
-            print("Error: Unable to download the video.")
+            print(f"Error: Unable to download the video {title}.")
 
 
-def create_video_dataframe(video_info):
-    video_df = pd.DataFrame([video_info])
-    return video_df
+def create_playlist_dataframe(video_ids, api_key):
+    video_info_list = []
+
+    for video_id in video_ids:
+        video_info = youtube_video_info(video_id, api_key)
+        video_info_list.append(video_info)
+
+    video_dataframe = pd.DataFrame(video_info_list)
+    return video_dataframe
 
 
 def main():
-    # Example YouTube video URL
-    youtube_video_url = (
-        "https://www.youtube.com/watch?v=9z-Mh9Qeinw&ab_channel=bonnietylerVEVO"
-    )
+    # Example YouTube playlist URL
+    youtube_playlist_url = "https://music.youtube.com/playlist?list=RDCLAK5uy_n20FRYQXNt1p1wS55Nj2r14IouO5weaYU&playnext=1&si=Mcuq363m5ScFqZfM"
 
     # Directory to store downloaded videos
     output_directory = "downloaded_videos"
@@ -80,27 +76,24 @@ def main():
     # Set up your YouTube Data API key
     api_key = "AIzaSyD5h1myju5oxuNDA1XDUaIKy_piFUfEPIU"
 
-    # Extract video information from YouTube Data API
-    with youtube_dl.YoutubeDL() as ydl:
-        info_dict = ydl.extract_info(youtube_video_url, download=False)
-        video_id = info_dict.get("id", "")
-    video_info = youtube_video_info(video_id, api_key)
+    # Get playlist ID and video IDs
+    playlist_id = get_playlist_id(youtube_playlist_url)
+    video_ids = get_video_ids_from_playlist(playlist_id, api_key)
 
-    # Display video information
-    print("Video Information:")
-    for key, value in video_info.items():
-        print(f"{key}: {value}")
+    # Download playlist videos
+    download_playlist_videos(video_ids, output_directory)
 
-    # Download the video using youtube_dl with verbose
-    download_video(youtube_video_url, output_directory)
-
-    # Create a DataFrame with extracted features
-    video_dataframe = create_video_dataframe(video_info)
+    # Create a DataFrame with extracted features for the playlist videos
+    playlist_dataframe = create_playlist_dataframe(video_ids, api_key)
 
     # Display the DataFrame
     print("\nDataFrame:")
-    print(video_dataframe)
+    print(playlist_dataframe)
+
+    # Save the DataFrame to a CSV file
+    csv_file_path = "playlist_videos.csv"
+    playlist_dataframe.to_csv(csv_file_path, index=False)
+    print(f"\nDataFrame saved to {csv_file_path}")
 
 
-if __name__ == "__main__":
-    main()
+main()
