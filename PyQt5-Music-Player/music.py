@@ -169,7 +169,6 @@ class Window(QMainWindow):
         frame = QFrame()
         frame.setMinimumWidth(800)
         frame.setFrameShape(QFrame.Box)
-        frame.setFrameShadow(QFrame.Sunken)
         frame.setLayout(info_container)
 
         img_frame = QFrame()
@@ -233,7 +232,6 @@ class Window(QMainWindow):
         )  # Add this spacer in the column to the right of the track title
 
         info_container.addWidget(self.track_title, 2, 1, 1, 1, Qt.AlignCenter)
-
 
         # info_container.addWidget(released, 3, 0, 1, 1)
         # info_container.addWidget(self.released, 3, 1, 1, 1)
