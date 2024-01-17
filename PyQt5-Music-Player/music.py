@@ -218,13 +218,23 @@ class Window(QMainWindow):
         # info_container.addWidget(album, 1, 0, 1, 1)
         # info_container.addWidget(self.album_title, 1, 1, 1, 1)
         # info_container.addWidget(track, 2, 0, 1, 1)
-        info_container.addWidget(self.track_title, 2, 0, 1, 1, Qt.AlignCenter)
-        spacer = QWidget()
+        vertical_spacer = QWidget()
         vertical_padding = 170
-        spacer.setFixedHeight(vertical_padding)
+        vertical_spacer.setFixedHeight(vertical_padding)
         info_container.addWidget(
-            spacer, 1, 0, 1, 1
+            vertical_spacer, 1, 0, 1, 1
         )  # Add this spacer in the row above the track title
+
+        horizontal_spacer = QWidget()
+        horizontal_padding = 100
+        horizontal_spacer.setFixedWidth(horizontal_padding)
+        info_container.addWidget(
+            horizontal_spacer, 2, 0, 1, 1
+        )  # Add this spacer in the column to the right of the track title
+
+        info_container.addWidget(self.track_title, 2, 1, 1, 1, Qt.AlignCenter)
+
+
         # info_container.addWidget(released, 3, 0, 1, 1)
         # info_container.addWidget(self.released, 3, 1, 1, 1)
         # info_container.addWidget(genre, 4, 0, 1, 1)
@@ -412,9 +422,7 @@ class Window(QMainWindow):
             #     )
             # Replace this line
             if self.player.metaData(QMediaMetaData.Title):
-                self.track_title.setText(
-                    self.player.metaData(QMediaMetaData.Title)
-                )
+                self.track_title.setText(self.player.metaData(QMediaMetaData.Title))
 
         # if self.player.metaData(QMediaMetaData.Year):
         #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
