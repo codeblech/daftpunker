@@ -84,6 +84,7 @@ class Window(QMainWindow):
         # self.album_title = QLabel()
         # self.album_title.setStyleSheet(common_style)
         self.track_title = QLabel()
+        self.track_title.setAlignment(Qt.AlignCenter)
         self.track_title.setFixedHeight(60)
         self.track_title.setWordWrap(True)
         silver_helmet_style = """
@@ -176,7 +177,13 @@ class Window(QMainWindow):
         # info_container.addWidget(album, 1, 0, 1, 1)
         # info_container.addWidget(self.album_title, 1, 1, 1, 1)
         # info_container.addWidget(track, 2, 0, 1, 1)
-        info_container.addWidget(self.track_title, 2, 0, 1, 1)
+        info_container.addWidget(self.track_title, 2, 0, 1, 1, Qt.AlignCenter)
+        spacer = QWidget()
+        vertical_padding = 150
+        spacer.setFixedHeight(vertical_padding)
+        info_container.addWidget(
+            spacer, 1, 0, 1, 1
+        )  # Add this spacer in the row above the track title
         # info_container.addWidget(released, 3, 0, 1, 1)
         # info_container.addWidget(self.released, 3, 1, 1, 1)
         # info_container.addWidget(genre, 4, 0, 1, 1)
@@ -362,21 +369,21 @@ class Window(QMainWindow):
                 self.track_title.setText(
                     self._truncate(self.player.metaData(QMediaMetaData.Title))
                 )
-            # if self.player.metaData(QMediaMetaData.Year):
-            #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
-            # if self.player.metaData(QMediaMetaData.Genre):
-            #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
-            # if self.player.metaData(QMediaMetaData.Title):
-            #     self.track.setText(
-            #         f"Track: {self._truncate(self.player.metaData(QMediaMetaData.Title),20)}"
-            #     )
-            # if self.player.metaData(QMediaMetaData.CoverArtImage):
-            #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
-            #     pixmap = pixmap.scaled(
-            #         int(pixmap.width() / 3), int(pixmap.height() / 3)
-            #     )
-            #     self.art.setPixmap(pixmap)
-            #     self.art.setContentsMargins(0, 32, 0, 5)
+        # if self.player.metaData(QMediaMetaData.Year):
+        #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
+        # if self.player.metaData(QMediaMetaData.Genre):
+        #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
+        # if self.player.metaData(QMediaMetaData.Title):
+        #     self.track.setText(
+        #         f"Track: {self._truncate(self.player.metaData(QMediaMetaData.Title),20)}"
+        #     )
+        # if self.player.metaData(QMediaMetaData.CoverArtImage):
+        #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
+        #     pixmap = pixmap.scaled(
+        #         int(pixmap.width() / 3), int(pixmap.height() / 3)
+        #     )
+        #     self.art.setPixmap(pixmap)
+        #     self.art.setContentsMargins(0, 32, 0, 5)
 
     # Create the header
     def _header_footer(self, minheight, maxheight, fontsize, text):
