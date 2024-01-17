@@ -22,6 +22,7 @@ from PyQt5.QtWidgets import (
     QDial,
     QSpacerItem,
     QSizePolicy,
+    QListWidgetItem,
 )
 from PyQt5.QtGui import QImage, QPalette, QBrush, QPainter
 from PyQt5.QtCore import QSize, QTimer, QRect
@@ -147,11 +148,12 @@ class Window(QMainWindow):
         # ... [previous code] ...
 
         # Add spacers and music list to the container layout
-        horizontal_spacer_2 = QSpacerItem(120, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        horizontal_spacer_2 = QSpacerItem(
+            120, 10, QSizePolicy.Minimum, QSizePolicy.Expanding
+        )
         self.musiclist_container_layout.addItem(horizontal_spacer_2, 2, 1, 1, 1)
 
         # ... [rest of the code] ...
-
 
         vertical_spacer_2 = QWidget()
         vertical_padding_2 = 70
@@ -160,7 +162,6 @@ class Window(QMainWindow):
         self.musiclist_container_layout.addWidget(vertical_spacer_2, 1, 0, 1, 1)
 
         self.musiclist_container_layout.addWidget(self.musiclist, 2, 0, 1, 1)
-
 
         # Create some containers
         btn_box = QHBoxLayout()
@@ -423,6 +424,13 @@ class Window(QMainWindow):
         #     self.art.setPixmap(pixmap)
         #     self.art.setContentsMargins(0, 32, 0, 5)
 
+    def addScrollingItem(self, text):
+        scrollingItem = QListWidgetItem(self.musiclist)
+        scrollingLabel = ScrollingLabel()
+        scrollingLabel.setText(text)
+        # Set appropriate size and style for scrollingLabel here
+        self.musiclist.setItemWidget(scrollingItem, scrollingLabel)
+
     # Create the header
     def _header_footer(self, minheight, maxheight, fontsize, text):
         shadow = QGraphicsDropShadowEffect()
@@ -476,10 +484,12 @@ class Window(QMainWindow):
             self.playlist.addMedia(QMediaContent(self.url.fromLocalFile(file)))
             try:
                 track = MP3(file)
-                self.musiclist.addItem(str(track["TIT2"]))
+                track_name = str(track.get("TIT2", "Unlabeled Track"))
             except:
-                track = self._truncate(file.rpartition("/")[2].rpartition(".")[0])
-                self.musiclist.addItem(track)
+                track_name = file.rpartition("/")[2].rpartition(".")[0]
+
+
+        self.addScrollingItem(str(track_name))
 
         self.musiclist.setCurrentRow(0)
         self.playlist.setCurrentIndex(0)
@@ -508,12 +518,12 @@ class Window(QMainWindow):
         if self.playlist.mediaCount() > 0:
             if self.player.state() != QMediaPlayer.PlayingState:
                 self.play_btn.setText("Pause")
-                self.status.setText("Status: Now Playing")
+                # self.status.setText("Status: Now Playing")
                 self.player.play()
             else:
                 self.play_btn.setText("Play")
                 self.player.pause()
-                self.status.setText("Status: Now Paused")
+                # self.status.setText("Status: Now Paused")
 
         else:
             pass
