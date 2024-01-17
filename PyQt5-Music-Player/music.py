@@ -115,6 +115,7 @@ class Window(QMainWindow):
         slider_box = QVBoxLayout()
         slider_box.setContentsMargins(5, 80, 5, 5)
         dial_box = QVBoxLayout()
+        dial_box.setAlignment(Qt.AlignCenter)
         container = QGridLayout()
         info_container = QGridLayout()
         info_container.setSpacing(8)
@@ -144,18 +145,17 @@ class Window(QMainWindow):
         dial_frame.setStyleSheet(common_style)
         dial_frame.setFrameShape(QFrame.Box)
         dial_frame.setFrameShadow(QFrame.Sunken)
-        dial_frame.setLayout(dial_box)
 
         self.dial = QDial()
         self.dial.setRange(0, 100)
         self.dial.setNotchesVisible(True)
         self.dial.setSliderPosition(70)
         self.dial.setValue(70)
-        self.dial.setMinimumWidth(200)
-        self.dial.setMaximumWidth(200)
-        self.dial.setMinimumHeight(100)
+        self.dial.setFixedHeight(100)
+        self.dial.setFixedWidth(100)
         dial_box.addWidget(QLabel("Volume"))
         dial_box.addWidget(self.dial)
+        dial_frame.setLayout(dial_box)
 
         # Used to update various aspects of gui
         self.playlist.currentIndexChanged.connect(self.update)
@@ -245,12 +245,18 @@ class Window(QMainWindow):
         # )
         # container.addWidget(self.status, 1, 0, 1, 1)
         # container.addWidget(self.track, 1, 1, 1, 1)
-        container.addLayout(btn_box, 1, 2, 1, 1) # For file and clear buttons
-        container.addWidget(frame, 2, 0, 2, 1)   # For track info
-        container.addWidget(self.musiclist, 2, 1, 1, 2) # For the music list
-        container.addLayout(btn_box2, 3, 0, 1, 3) # Move control buttons above the slider
-        container.addWidget(slider_frame, 4, 0, 1, 2) # Assign two columns for the slider
-        container.addWidget(dial_frame, 4, 2, 1, 1)   # Place the volume control in the third column
+        container.addLayout(btn_box, 1, 2, 1, 1)  # For file and clear buttons
+        container.addWidget(frame, 2, 0, 2, 1)  # For track info
+        container.addWidget(self.musiclist, 2, 1, 1, 2)  # For the music list
+        container.addLayout(
+            btn_box2, 3, 0, 1, 3
+        )  # Move control buttons above the slider
+        container.addWidget(
+            slider_frame, 4, 0, 1, 2
+        )  # Assign two columns for the slider
+        container.addWidget(
+            dial_frame, 4, 2, 1, 1
+        )  # Place the volume control in the third column
 
         # container.addWidget(
         #     self._header_footer(40, 40, 10, "my-python.org - 10/16/2021"), 5, 0, 1, 3
