@@ -221,11 +221,6 @@ class Window(QMainWindow):
         self.next_btn.setCursor(Qt.PointingHandCursor)
         self.next_btn.setStyleSheet(btn_style)
 
-        self.stop_btn = QPushButton("Stop")
-        self.stop_btn.released.connect(self._stop)
-        self.stop_btn.setCursor(Qt.PointingHandCursor)
-        self.stop_btn.setStyleSheet(btn_style)
-
         self.exit_btn = QPushButton("Exit")
         self.exit_btn.released.connect(sys.exit)
         self.exit_btn.setCursor(Qt.PointingHandCursor)
@@ -242,7 +237,6 @@ class Window(QMainWindow):
         btn_box2.addWidget(self.play_btn)
         btn_box2.addWidget(self.prev_btn)
         btn_box2.addWidget(self.next_btn)
-        btn_box2.addWidget(self.stop_btn)
         btn_box2.addWidget(self.exit_btn)
 
         # Add layouts to container layout
@@ -251,12 +245,13 @@ class Window(QMainWindow):
         # )
         # container.addWidget(self.status, 1, 0, 1, 1)
         # container.addWidget(self.track, 1, 1, 1, 1)
-        container.addLayout(btn_box, 1, 2, 1, 1)
-        container.addWidget(frame, 2, 0, 2, 1)
-        container.addWidget(self.musiclist, 2, 1, 1, 2)
-        container.addLayout(btn_box2, 3, 1, 1, 2)
-        container.addWidget(slider_frame, 4, 0, 1, 2)
-        container.addWidget(dial_frame, 4, 2, 1, 1)
+        container.addLayout(btn_box, 1, 2, 1, 1) # For file and clear buttons
+        container.addWidget(frame, 2, 0, 2, 1)   # For track info
+        container.addWidget(self.musiclist, 2, 1, 1, 2) # For the music list
+        container.addLayout(btn_box2, 3, 0, 1, 3) # Move control buttons above the slider
+        container.addWidget(slider_frame, 4, 0, 1, 2) # Assign two columns for the slider
+        container.addWidget(dial_frame, 4, 2, 1, 1)   # Place the volume control in the third column
+
         # container.addWidget(
         #     self._header_footer(40, 40, 10, "my-python.org - 10/16/2021"), 5, 0, 1, 3
         # )
