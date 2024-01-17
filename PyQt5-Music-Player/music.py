@@ -111,7 +111,7 @@ class Window(QMainWindow):
 
         # Create some containers
         btn_box = QHBoxLayout()
-        btn_box2 = QHBoxLayout()
+
         slider_box = QVBoxLayout()
         slider_box.setContentsMargins(5, 80, 5, 5)
         dial_box = QVBoxLayout()
@@ -183,61 +183,94 @@ class Window(QMainWindow):
         # btn_style = """QPushButton{background-color: skyblue;}
         #                QPushButton:hover{background-color: lightskyblue; color: dodgerblue; \
         #                font-weight: bold;}"""
-        btn_style = """QPushButton{background-color: #ffffff; color: #000000; border: none; \
-                       font-family: LED Dot-Matrix; font-size: 20px; padding: 8px 16px;}
-                       QPushButton:hover{background-color: #ffffff; color: #000000; \
-                       font-weight: bold;}"""
-        btn_style_2 = """QPushButton{background-color: #ffffff; color: #000000; border: none; \
-                       font-family: LED Dot-Matrix; font-size: 20px; padding: 8px 8px;}
-                       QPushButton:hover{background-color: #ffffff; color: #000000; \
-                       font-weight: bold;}"""
+        btn_style = """
+                        QPushButton{background-color: #ffffff;
+                                    color: #000000;
+                                    border: none;
+                                    font-family: LED Dot-Matrix;
+                                    font-size: 20px;
+                                    padding: 8px 8px;
+
+                                    }
+                        QPushButton:hover{background-color: #ffffff;
+                                        color: #000000;
+                                        font-weight: bold;
+                                        }"""
+        btn_style_2 = """
+                        QPushButton{background-color: #ffffff;
+                                    color: #000000;
+                                    border: none;
+                                    font-family: LED Dot-Matrix;
+                                    font-size: 20px;
+                                    padding: 8px 8px;
+
+                                    }
+                        QPushButton:hover{background-color: #ffffff;
+                                            color: #000000;
+                                            font-weight: bold;
+                                            }"""
 
         # Create buttons for getting audio files and clearing playlist
+        top_buttons_width = 170
+        top_buttons_height = 50
         file_btn = QPushButton("Add Music")
         file_btn.released.connect(self._files)
         file_btn.setCursor(Qt.PointingHandCursor)
         file_btn.setStyleSheet(btn_style_2)
-        file_btn.setFixedSize(140, 50)
+        file_btn.setFixedSize(top_buttons_width, top_buttons_height)
 
         clear_btn = QPushButton("Clear List")
         clear_btn.released.connect(self._clear)
         clear_btn.setCursor(Qt.PointingHandCursor)
         clear_btn.setStyleSheet(btn_style_2)
-        clear_btn.setFixedSize(140, 50)
+        clear_btn.setFixedSize(top_buttons_width, top_buttons_height)
 
         # Create & style the control buttons
         self.play_btn = QPushButton("Play")
         self.play_btn.released.connect(self._state)
         self.play_btn.setCursor(Qt.PointingHandCursor)
         self.play_btn.setStyleSheet(btn_style)
+        self.play_btn.setFixedSize(top_buttons_width, top_buttons_height)
 
         self.prev_btn = QPushButton("Prev")
         self.prev_btn.released.connect(self._prev)
         self.prev_btn.setCursor(Qt.PointingHandCursor)
         self.prev_btn.setStyleSheet(btn_style)
+        self.prev_btn.setFixedSize(top_buttons_width, top_buttons_height)
 
         self.next_btn = QPushButton("Next")
         self.next_btn.released.connect(self._next)
         self.next_btn.setCursor(Qt.PointingHandCursor)
         self.next_btn.setStyleSheet(btn_style)
+        self.next_btn.setFixedSize(top_buttons_width, top_buttons_height)
 
         self.exit_btn = QPushButton("Exit")
         self.exit_btn.released.connect(sys.exit)
         self.exit_btn.setCursor(Qt.PointingHandCursor)
+        self.exit_btn.setFixedSize(top_buttons_width, top_buttons_height)
         self.exit_btn.setStyleSheet(
-            """QPushButton{background-color: firebrick; color: #000000; border: none;
-                       font-family: LED Dot-Matrix; font-size: 20px; padding: 8px 8px;}
-                       QPushButton:hover{background-color: firebrick; color: #000000;
-                       font-weight: bold;}"""
+            """QPushButton{background-color: firebrick;
+                           color: #000000;
+                           border: none;
+                           font-family: LED Dot-Matrix;
+                           font-size: 20px;
+                           padding: 8px 8px;
+
+                           }
+               QPushButton:hover{background-color: firebrick;
+                                color: #000000;
+                                font-weight: bold;
+                                }"""
         )
 
         # Add the buttons to layout
+        # btn_box.setSpacing(10)
+        btn_box.addWidget(self.prev_btn)
+        btn_box.addWidget(self.play_btn)
+        btn_box.addWidget(self.next_btn)
         btn_box.addWidget(file_btn)
         btn_box.addWidget(clear_btn)
-        btn_box2.addWidget(self.play_btn)
-        btn_box2.addWidget(self.prev_btn)
-        btn_box2.addWidget(self.next_btn)
-        btn_box2.addWidget(self.exit_btn)
+        btn_box.addWidget(self.exit_btn)
 
         # Add layouts to container layout
         # container.addWidget(
@@ -245,11 +278,11 @@ class Window(QMainWindow):
         # )
         # container.addWidget(self.status, 1, 0, 1, 1)
         # container.addWidget(self.track, 1, 1, 1, 1)
-        container.addLayout(btn_box, 1, 2, 1, 1)  # For file and clear buttons
+        container.addLayout(btn_box, 1, 0, 1, 3)  # For file and clear buttons
         container.addWidget(frame, 2, 0, 2, 1)  # For track info
         container.addWidget(self.musiclist, 2, 1, 1, 2)  # For the music list
         container.addLayout(
-            btn_box2, 3, 0, 1, 3
+            btn_box, 1, 0, 1, 3
         )  # Move control buttons above the slider
         container.addWidget(
             slider_frame, 4, 0, 1, 2
