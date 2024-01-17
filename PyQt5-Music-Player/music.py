@@ -20,6 +20,8 @@ from PyQt5.QtWidgets import (
     QSlider,
     QVBoxLayout,
     QDial,
+    QSpacerItem,
+    QSizePolicy,
 )
 from PyQt5.QtGui import QImage, QPalette, QBrush, QPainter
 from PyQt5.QtCore import QSize, QTimer, QRect
@@ -97,32 +99,6 @@ class Window(QMainWindow):
                         font-size: 10pt;
                         color: white;
                        """
-        self.status = QLabel("Status: Now Stopped")
-        self.status.setStyleSheet(common_style)
-        self.status.setFrameShape(QFrame.Box)
-        self.status.setFrameShadow(QFrame.Sunken)
-
-        # self.track = QLabel("Track: ")
-        # self.track.setStyleSheet(common_style)
-        # self.track.setFrameShape(QFrame.Box)
-        # self.track.setFrameShadow(QFrame.Sunken)
-
-        # Labels for the track information
-        # artist = QLabel("Artist:")
-        # artist.setStyleSheet(common_style)
-        # album = QLabel("Album:")
-        # album.setStyleSheet(common_style)
-        # track = QLabel("Track:")
-
-        # released = QLabel("Album Release:")
-        # released.setStyleSheet(common_style)
-        # genre = QLabel("Genre:")
-        # genre.setStyleSheet(common_style)
-
-        # self.artist = QLabel()
-        # self.artist.setStyleSheet(common_style)
-        # self.album_title = QLabel()
-        # self.album_title.setStyleSheet(common_style)
         self.track_title = ScrollingLabel()
         self.track_title.setAlignment(Qt.AlignCenter)
         self.track_title.setFixedHeight(60)
@@ -151,9 +127,40 @@ class Window(QMainWindow):
         self.musiclist = QListWidget()
         self.musiclist.setFixedHeight(300)
         self.musiclist.setFixedWidth(370)
-        self.musiclist.setStyleSheet("background-color: transparent; color: white;")
-        self.musiclist.setFrameShape(QFrame.Box)
-        self.musiclist.setFrameShadow(QFrame.Sunken)
+        self.musiclist.setStyleSheet(
+            "background-color: transparent; color: white; font-family: LED Dot-Matrix; font-weight: bold; font-size: 15pt;"
+        )
+        self.musiclist.setFrameShape(QFrame.NoFrame)
+        self.musiclist.setFixedSize(310, 400)  # Adjust size to fit within the visor
+
+        # Create the music list container widget
+        self.musiclist_container = QWidget()
+        self.musiclist_container_layout = QGridLayout()
+        self.musiclist_container.setLayout(self.musiclist_container_layout)
+
+        # Add spacers and music list to the container layout
+        # horizontal_spacer_2 = QWidget()
+        # horizontal_padding_2 = 100
+        # horizontal_spacer_2.setFixedWidth(horizontal_padding_2)
+        # horizontal_spacer_2.setFixedHeight(0)
+        # self.musiclist_container_layout.addWidget(horizontal_spacer_2, 2, 1, 1, 1)
+        # ... [previous code] ...
+
+        # Add spacers and music list to the container layout
+        horizontal_spacer_2 = QSpacerItem(120, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.musiclist_container_layout.addItem(horizontal_spacer_2, 2, 1, 1, 1)
+
+        # ... [rest of the code] ...
+
+
+        vertical_spacer_2 = QWidget()
+        vertical_padding_2 = 70
+        vertical_spacer_2.setFixedHeight(vertical_padding_2)
+        vertical_spacer_2.setFixedWidth(0)
+        self.musiclist_container_layout.addWidget(vertical_spacer_2, 1, 0, 1, 1)
+
+        self.musiclist_container_layout.addWidget(self.musiclist, 2, 0, 1, 1)
+
 
         # Create some containers
         btn_box = QHBoxLayout()
@@ -168,7 +175,7 @@ class Window(QMainWindow):
 
         frame = QFrame()
         frame.setMinimumWidth(800)
-        frame.setFrameShape(QFrame.Box)
+        frame.setFrameShape(QFrame.NoFrame)
         frame.setLayout(info_container)
 
         img_frame = QFrame()
@@ -176,7 +183,7 @@ class Window(QMainWindow):
 
         # Create slider frame and control
         slider_frame = QFrame()
-        slider_frame.setFrameShape(QFrame.Box)
+        slider_frame.setFrameShape(QFrame.NoFrame)
         # slider_frame.setFrameShadow(QFrame.Sunken)
         slider_frame.setMinimumHeight(20)
         slider_frame.setLayout(slider_box)
@@ -188,8 +195,8 @@ class Window(QMainWindow):
         # Create volume frame and control
         dial_frame = QFrame()
         dial_frame.setStyleSheet(common_style)
-        dial_frame.setFrameShape(QFrame.Box)
-        dial_frame.setFrameShadow(QFrame.Sunken)
+        dial_frame.setFrameShape(QFrame.NoFrame)
+        # dial_frame.setFrameShadow(QFrame.Sunken)
 
         self.dial = QDial()
         self.dial.setRange(0, 100)
@@ -211,14 +218,8 @@ class Window(QMainWindow):
         self.player.durationChanged.connect(self.duration)
         self.slider.valueChanged.connect(self.timer)
 
-        # Add track information to the info container
-        # info_container.addWidget(artist, 0, 0, 1, 1)
-        # info_container.addWidget(self.artist, 0, 1, 1, 1)
-        # info_container.addWidget(album, 1, 0, 1, 1)
-        # info_container.addWidget(self.album_title, 1, 1, 1, 1)
-        # info_container.addWidget(track, 2, 0, 1, 1)
         vertical_spacer = QWidget()
-        vertical_padding = 170
+        vertical_padding = 110
         vertical_spacer.setFixedHeight(vertical_padding)
         info_container.addWidget(
             vertical_spacer, 1, 0, 1, 1
@@ -233,16 +234,6 @@ class Window(QMainWindow):
 
         info_container.addWidget(self.track_title, 2, 1, 1, 1, Qt.AlignCenter)
 
-        # info_container.addWidget(released, 3, 0, 1, 1)
-        # info_container.addWidget(self.released, 3, 1, 1, 1)
-        # info_container.addWidget(genre, 4, 0, 1, 1)
-        # info_container.addWidget(self.genre, 4, 1, 1, 1)
-        # info_container.addWidget(self.art, 5, 0, 1, 2)
-
-        # Create the control buttons & button styles
-        # btn_style = """QPushButton{background-color: skyblue;}
-        #                QPushButton:hover{background-color: lightskyblue; color: dodgerblue; \
-        #                font-weight: bold;}"""
         btn_style = """
                         QPushButton{background-color: #ffffff;
                                     color: #000000;
@@ -332,14 +323,9 @@ class Window(QMainWindow):
         btn_box.addWidget(clear_btn)
         btn_box.addWidget(self.exit_btn)
 
-        # Add layouts to container layout
-        # container.addWidget(
-        #     self._header_footer(100, 100, 40, "PyQt5 Music Player"), 0, 0, 1, 3
-        # )
-        # container.addWidget(self.status, 1, 0, 1, 1)
-        # container.addWidget(self.track, 1, 1, 1, 1)
         container.addWidget(frame, 2, 0, 2, 1)  # For track info
-        container.addWidget(self.musiclist, 2, 1, 1, 2)  # For the music list
+
+        container.addWidget(self.musiclist_container, 2, 1, 1, 2)  # For the music list
         container.addLayout(
             btn_box, 1, 0, 1, 3
         )  # Move control buttons above the slider
@@ -349,10 +335,6 @@ class Window(QMainWindow):
         container.addWidget(
             dial_frame, 4, 2, 1, 1
         )  # Place the volume control in the third column
-
-        # container.addWidget(
-        #     self._header_footer(40, 40, 10, "my-python.org - 10/16/2021"), 5, 0, 1, 3
-        # )
 
         # Create and set the layout to container
         widget = QWidget()
@@ -408,17 +390,6 @@ class Window(QMainWindow):
     # Get music metadata
     def meta_data(self):
         if self.player.isMetaDataAvailable():
-            # if self.player.metaData(QMediaMetaData.AlbumArtist):
-            #     self.artist.setText(self.player.metaData(QMediaMetaData.AlbumArtist))
-            # if self.player.metaData(QMediaMetaData.AlbumTitle):
-            #     self.album_title.setText(
-            #         self._truncate(self.player.metaData(QMediaMetaData.AlbumTitle))
-            #     )
-            # if self.player.metaData(QMediaMetaData.Title):
-            #     self.track_title.setText(
-            #         self._truncate(self.player.metaData(QMediaMetaData.Title))
-            #     )
-            # Replace this line
             if self.player.metaData(QMediaMetaData.Title):
                 self.track_title.setText(self.player.metaData(QMediaMetaData.Title))
 
@@ -428,7 +399,21 @@ class Window(QMainWindow):
         #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
         # if self.player.metaData(QMediaMetaData.Title):
         #     self.track.setText(
+        #         f"Track: {self._truncate(self.player.me        # if self.player.metaData(QMediaMetaData.Year):
+        #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
+        # if self.player.metaData(QMediaMetaData.Genre):
+        #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
+        # if self.player.metaData(QMediaMetaData.Title):
+        #     self.track.setText(
         #         f"Track: {self._truncate(self.player.metaData(QMediaMetaData.Title),20)}"
+        #     )
+        # if self.player.metaData(QMediaMetaData.CoverArtImage):
+        #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
+        #     pixmap = pixmap.scaled(
+        #         int(pixmap.width() / 3), int(pixmap.height() / 3)
+        #     )
+        #     self.art.setPixmap(pixmap)
+        #     self.art.setContentsMargins(0, 32, 0, 5)taData(QMediaMetaData.Title),20)}"
         #     )
         # if self.player.metaData(QMediaMetaData.CoverArtImage):
         #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
@@ -477,13 +462,6 @@ class Window(QMainWindow):
         self.playlist.clear()
         self.play_btn.setText("Play")
         self.status.setText("Status: ")
-        # self.track.setText("Track: ")
-        # self.artist.setText("Artist: ")
-        # self.album_title.setText("Album: ")
-        # self.track_title.setText("Track: ")
-        # self.released.setText("Released: ")
-        # self.genre.setText("Genre: ")
-        # self.art.setContentsMargins(5, 170, 5, 50)
         pixmap = QPixmap()
         self.art.setPixmap(pixmap)
         self.dial.setSliderPosition(70)
