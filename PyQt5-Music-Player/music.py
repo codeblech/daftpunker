@@ -132,7 +132,7 @@ class Window(QMainWindow):
             "background-color: transparent; color: white; font-family: LED Dot-Matrix; font-weight: bold; font-size: 15pt;"
         )
         self.musiclist.setFrameShape(QFrame.NoFrame)
-        self.musiclist.setFixedSize(310, 400)  # Adjust size to fit within the visor
+        self.musiclist.setFixedSize(310, 320)  # Adjust size to fit within the visor
 
         # Create the music list container widget
         self.musiclist_container = QWidget()
@@ -156,7 +156,7 @@ class Window(QMainWindow):
         # ... [rest of the code] ...
 
         vertical_spacer_2 = QWidget()
-        vertical_padding_2 = 70
+        vertical_padding_2 = 10
         vertical_spacer_2.setFixedHeight(vertical_padding_2)
         vertical_spacer_2.setFixedWidth(0)
         self.musiclist_container_layout.addWidget(vertical_spacer_2, 1, 0, 1, 1)
@@ -488,8 +488,7 @@ class Window(QMainWindow):
             except:
                 track_name = file.rpartition("/")[2].rpartition(".")[0]
 
-
-        self.addScrollingItem(str(track_name))
+            self.addScrollingItem(str(track_name))
 
         self.musiclist.setCurrentRow(0)
         self.playlist.setCurrentIndex(0)
