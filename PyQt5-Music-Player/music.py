@@ -128,6 +128,7 @@ class Window(QMainWindow):
         self.musiclist = QListWidget()
         self.musiclist.setFixedHeight(300)
         self.musiclist.setFixedWidth(370)
+        self.musiclist.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Hide vertical scrollbar
         self.musiclist.setStyleSheet(
             "background-color: transparent; color: white; font-family: LED Dot-Matrix; font-weight: bold; font-size: 15pt;"
         )
