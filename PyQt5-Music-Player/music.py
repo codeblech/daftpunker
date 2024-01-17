@@ -39,7 +39,7 @@ class ScrollingLabel(QLabel):
         self.offset = 0
         self.myTimer = QTimer(self)
         self.myTimer.timeout.connect(self.timerEvent)
-        self.myTimer.start(20)  # Adjust speed as necessary
+        self.myTimer.start(15)  # Adjust speed as necessary
 
     def setText(self, text):
         super().setText(text)
@@ -126,6 +126,7 @@ class Window(QMainWindow):
         self.track_title = ScrollingLabel()
         self.track_title.setAlignment(Qt.AlignCenter)
         self.track_title.setFixedHeight(60)
+        self.track_title.setFixedWidth(400)
         self.track_title.setWordWrap(True)
         silver_helmet_style = """
                         font-family: LED Dot-Matrix;
@@ -219,7 +220,7 @@ class Window(QMainWindow):
         # info_container.addWidget(track, 2, 0, 1, 1)
         info_container.addWidget(self.track_title, 2, 0, 1, 1, Qt.AlignCenter)
         spacer = QWidget()
-        vertical_padding = 150
+        vertical_padding = 170
         spacer.setFixedHeight(vertical_padding)
         info_container.addWidget(
             spacer, 1, 0, 1, 1
@@ -405,10 +406,16 @@ class Window(QMainWindow):
             #     self.album_title.setText(
             #         self._truncate(self.player.metaData(QMediaMetaData.AlbumTitle))
             #     )
+            # if self.player.metaData(QMediaMetaData.Title):
+            #     self.track_title.setText(
+            #         self._truncate(self.player.metaData(QMediaMetaData.Title))
+            #     )
+            # Replace this line
             if self.player.metaData(QMediaMetaData.Title):
                 self.track_title.setText(
-                    self._truncate(self.player.metaData(QMediaMetaData.Title))
+                    self.player.metaData(QMediaMetaData.Title)
                 )
+
         # if self.player.metaData(QMediaMetaData.Year):
         #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
         # if self.player.metaData(QMediaMetaData.Genre):
