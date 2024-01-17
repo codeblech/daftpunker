@@ -72,8 +72,8 @@ class Window(QMainWindow):
         # artist.setStyleSheet(common_style)
         # album = QLabel("Album:")
         # album.setStyleSheet(common_style)
-        track = QLabel("Track:")
-        track.setStyleSheet(common_style)
+        # track = QLabel("Track:")
+
         # released = QLabel("Album Release:")
         # released.setStyleSheet(common_style)
         # genre = QLabel("Genre:")
@@ -84,6 +84,8 @@ class Window(QMainWindow):
         # self.album_title = QLabel()
         # self.album_title.setStyleSheet(common_style)
         self.track_title = QLabel()
+        self.track_title.setFixedHeight(60)
+        self.track_title.setWordWrap(True)
         silver_helmet_style = """
                         font-family: LED Dot-Matrix;
                         font-weight: bold;
@@ -105,6 +107,8 @@ class Window(QMainWindow):
 
         # Define and create the listbox
         self.musiclist = QListWidget()
+        self.musiclist.setFixedHeight(300)
+        self.musiclist.setFixedWidth(400)
         self.musiclist.setStyleSheet("background-color: transparent; color: white;")
         self.musiclist.setFrameShape(QFrame.Box)
         self.musiclist.setFrameShadow(QFrame.Sunken)
@@ -171,8 +175,8 @@ class Window(QMainWindow):
         # info_container.addWidget(self.artist, 0, 1, 1, 1)
         # info_container.addWidget(album, 1, 0, 1, 1)
         # info_container.addWidget(self.album_title, 1, 1, 1, 1)
-        info_container.addWidget(track, 2, 0, 1, 1)
-        info_container.addWidget(self.track_title, 2, 1, 1, 1)
+        # info_container.addWidget(track, 2, 0, 1, 1)
+        info_container.addWidget(self.track_title, 2, 0, 1, 1)
         # info_container.addWidget(released, 3, 0, 1, 1)
         # info_container.addWidget(self.released, 3, 1, 1, 1)
         # info_container.addWidget(genre, 4, 0, 1, 1)
