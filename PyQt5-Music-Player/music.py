@@ -108,7 +108,7 @@ class Window(QMainWindow):
         # Define and create the listbox
         self.musiclist = QListWidget()
         self.musiclist.setFixedHeight(300)
-        self.musiclist.setFixedWidth(400)
+        self.musiclist.setFixedWidth(370)
         self.musiclist.setStyleSheet("background-color: transparent; color: white;")
         self.musiclist.setFrameShape(QFrame.Box)
         self.musiclist.setFrameShadow(QFrame.Sunken)
@@ -282,7 +282,6 @@ class Window(QMainWindow):
         # )
         # container.addWidget(self.status, 1, 0, 1, 1)
         # container.addWidget(self.track, 1, 1, 1, 1)
-        container.addLayout(btn_box, 1, 0, 1, 3)  # For file and clear buttons
         container.addWidget(frame, 2, 0, 2, 1)  # For track info
         container.addWidget(self.musiclist, 2, 1, 1, 2)  # For the music list
         container.addLayout(
