@@ -21,8 +21,8 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QDial,
 )
-from PyQt5.QtGui import QImage, QPalette, QBrush
-from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QImage, QPalette, QBrush, QPainter
+from PyQt5.QtCore import QSize, QTimer, QRect
 
 from PyQt5.QtGui import QGradient, QFont, QColor, QCursor, QIcon, QPixmap
 from PyQt5.QtMultimedia import (
@@ -31,6 +31,46 @@ from PyQt5.QtMultimedia import (
     QMediaPlaylist,
     QMediaMetaData,
 )
+
+
+class ScrollingLabel(QLabel):
+    def __init__(self, parent=None):
+        super(ScrollingLabel, self).__init__(parent)
+        self.offset = 0
+        self.myTimer = QTimer(self)
+        self.myTimer.timeout.connect(self.timerEvent)
+        self.myTimer.start(20)  # Adjust speed as necessary
+
+    def setText(self, text):
+        super().setText(text)
+        self.offset = 0  # Reset offset when text changes
+
+    def timerEvent(self):
+        self.offset -= 1  # Adjust scrolling speed and direction
+        self.update()  # Trigger a repaint
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        text = self.text()
+        metrics = painter.fontMetrics()
+        width = metrics.width(text)
+
+        if width > self.rect().width():
+            # Ensure x is an integer
+            x = int(self.offset % width)
+            # Create the rectangles with integer coordinates
+            rect1 = QRect(x, 0, width, self.rect().height())
+            rect2 = QRect(x - width, 0, width, self.rect().height())
+
+            painter.drawText(rect1, self.alignment(), text)
+            painter.drawText(rect2, self.alignment(), text)
+        else:
+            # When centering the text, ensure x is an integer
+            x = int((self.rect().width() - width) / 2)
+            rect = QRect(x, 0, width, self.rect().height())
+            painter.drawText(rect, self.alignment(), text)
+
+        painter.end()
 
 
 class Window(QMainWindow):
@@ -83,7 +123,7 @@ class Window(QMainWindow):
         # self.artist.setStyleSheet(common_style)
         # self.album_title = QLabel()
         # self.album_title.setStyleSheet(common_style)
-        self.track_title = QLabel()
+        self.track_title = ScrollingLabel()
         self.track_title.setAlignment(Qt.AlignCenter)
         self.track_title.setFixedHeight(60)
         self.track_title.setWordWrap(True)
