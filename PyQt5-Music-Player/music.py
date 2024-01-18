@@ -83,17 +83,15 @@ class Window(QMainWindow):
 
         self.setFixedSize(1600, 808)
 
-        # Load both images
-        self.backgroundImage1 = QImage("PyQt5-Music-Player/daft_punk.png")
-        self.backgroundImage2 = QImage("PyQt5-Music-Player/daft_punk_2.jpg")
-        self.useFirstImage = True  # Flag to toggle between images
-
-        # Timer to switch images
-        self.switchImageTimer = QTimer(self)
-        self.switchImageTimer.timeout.connect(self.toggleBackgroundImage)
-        self.switchImageTimer.start(2000)  # Switch every 2000 milliseconds (2 seconds)
-
-        self.updateBackground()
+        # Initialize background images and transition attributes
+        self.bgImage1 = QImage("PyQt5-Music-Player/daft_punk.png")
+        self.bgImage2 = QImage("PyQt5-Music-Player/daft_punk_2.jpg")
+        self.bgOpacity = 1.0  # Start with first image fully visible
+        self.transitionTimer = QTimer(self)
+        self.transitionTimer.timeout.connect(self.updateBackgroundTransition)
+        self.transitionTimer.start(
+            100
+        )  # Adjust the interval for smoother or faster transition
 
         # Create some variables
         self.url = QUrl()
@@ -354,21 +352,27 @@ class Window(QMainWindow):
         widget.setLayout(container)
         self.setCentralWidget(widget)
 
-    def toggleBackgroundImage(self):
-        # Toggle the flag
-        self.useFirstImage = not self.useFirstImage
-        # Update the background
-        self.updateBackground()
-
     def updateBackground(self):
-        # Choose the image based on the flag
-        if self.useFirstImage:
-            sImage = self.backgroundImage1.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
-        else:
-            sImage = self.backgroundImage2.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
+        # Blend the two background images based on current opacity
+        blendedImage = QImage(self.bgImage2.size(), QImage.Format_ARGB32)
+        painter = QPainter(blendedImage)
+        painter.setOpacity(self.bgOpacity)
+        painter.drawImage(0, 0, self.bgImage1)
+        painter.setOpacity(1 - self.bgOpacity)
+        painter.drawImage(0, 0, self.bgImage2)
+        painter.end()
+
+        sImage = blendedImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
+
+    def updateBackgroundTransition(self):
+        # Update opacity and trigger background update
+        self.bgOpacity -= 0.01  # Adjust for desired speed and smoothness
+        if self.bgOpacity < 0:
+            self.bgOpacity = 1.0  # Reset opacity for continuous loop
+        self.updateBackground()
 
     def resizeEvent(self, event):
         self.updateBackground()
