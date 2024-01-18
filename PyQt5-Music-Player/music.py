@@ -87,6 +87,8 @@ class Window(QMainWindow):
         self.bgImage1 = QImage("PyQt5-Music-Player/daft_punk.png")
         self.bgImage2 = QImage("PyQt5-Music-Player/daft_punk_2.jpg")
         self.bgOpacity = 1.0  # Start with first image fully visible
+        self.increasingOpacity = False  # Start by decreasing opacity
+        self.transitionSpeed = 0.01  # Adjust the speed of the transition here
         self.transitionTimer = QTimer(self)
         self.transitionTimer.timeout.connect(self.updateBackgroundTransition)
         self.transitionTimer.start(
@@ -368,10 +370,17 @@ class Window(QMainWindow):
         self.setPalette(palette)
 
     def updateBackgroundTransition(self):
-        # Update opacity and trigger background update
-        self.bgOpacity -= 0.01  # Adjust for desired speed and smoothness
-        if self.bgOpacity < 0:
-            self.bgOpacity = 1.0  # Reset opacity for continuous loop
+        if self.increasingOpacity:
+            self.bgOpacity += self.transitionSpeed  # Increase opacity
+            if self.bgOpacity >= 1:
+                self.bgOpacity = 1
+                self.increasingOpacity = False  # Switch direction
+        else:
+            self.bgOpacity -= self.transitionSpeed  # Decrease opacity
+            if self.bgOpacity <= 0:
+                self.bgOpacity = 0
+                self.increasingOpacity = True  # Switch direction
+
         self.updateBackground()
 
     def resizeEvent(self, event):
