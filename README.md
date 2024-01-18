@@ -18,7 +18,7 @@ Hey, hey, hey! It's your favorite out-of-touch bro dropping something cooler tha
 - **More Music, Less Daft Punk Overkill**: We're expanding beyond Daft Punk because, let's be honest, too much of a good thing is my entire social strategy.
 
 
-![eras](PyQt5-Music-Player/dperas.png)
+![eras](https://i.redd.it/fzhp3srcbmr41.png)
 
 ## Conclusion
 This is it, folks. The music player that's in its “we’re all gonna make it” era. It's like that friend who's chill but also slightly out of touch with reality. If you've ever felt like your music player just doesn't get your deep, indescribable sadness or your occasional delusional vibes, this is for you. Stay out of touch, but in tune. Love you all (only my followers).
