@@ -122,12 +122,6 @@ class Window(QMainWindow):
                         """
 
         self.track_title.setStyleSheet(silver_helmet_style)
-        # self.released = QLabel()
-        # self.released.setStyleSheet(common_style)
-        # self.genre = QLabel()
-        # self.genre.setStyleSheet(common_style)
-        # self.art = QLabel()
-        # self.art.setContentsMargins(5, 170, 5, 5)
 
         # Timer Label
         self._timer = QLabel("Duration: 00:00:00 / 00:00:00")
@@ -150,14 +144,6 @@ class Window(QMainWindow):
         self.musiclist_container = QWidget()
         self.musiclist_container_layout = QGridLayout()
         self.musiclist_container.setLayout(self.musiclist_container_layout)
-
-        # Add spacers and music list to the container layout
-        # horizontal_spacer_2 = QWidget()
-        # horizontal_padding_2 = 100
-        # horizontal_spacer_2.setFixedWidth(horizontal_padding_2)
-        # horizontal_spacer_2.setFixedHeight(0)
-        # self.musiclist_container_layout.addWidget(horizontal_spacer_2, 2, 1, 1, 1)
-        # ... [previous code] ...
 
         # Add spacers and music list to the container layout
         horizontal_spacer_2 = QSpacerItem(
@@ -466,36 +452,6 @@ class Window(QMainWindow):
         if self.player.isMetaDataAvailable():
             if self.player.metaData(QMediaMetaData.Title):
                 self.track_title.setText(self.player.metaData(QMediaMetaData.Title))
-
-        # if self.player.metaData(QMediaMetaData.Year):
-        #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
-        # if self.player.metaData(QMediaMetaData.Genre):
-        #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
-        # if self.player.metaData(QMediaMetaData.Title):
-        #     self.track.setText(
-        #         f"Track: {self._truncate(self.player.me        # if self.player.metaData(QMediaMetaData.Year):
-        #     self.released.setText(f"{self.player.metaData(QMediaMetaData.Year)}")
-        # if self.player.metaData(QMediaMetaData.Genre):
-        #     self.genre.setText(self.player.metaData(QMediaMetaData.Genre))
-        # if self.player.metaData(QMediaMetaData.Title):
-        #     self.track.setText(
-        #         f"Track: {self._truncate(self.player.metaData(QMediaMetaData.Title),20)}"
-        #     )
-        # if self.player.metaData(QMediaMetaData.CoverArtImage):
-        #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
-        #     pixmap = pixmap.scaled(
-        #         int(pixmap.width() / 3), int(pixmap.height() / 3)
-        #     )
-        #     self.art.setPixmap(pixmap)
-        #     self.art.setContentsMargins(0, 32, 0, 5)taData(QMediaMetaData.Title),20)}"
-        #     )
-        # if self.player.metaData(QMediaMetaData.CoverArtImage):
-        #     pixmap = QPixmap(self.player.metaData(QMediaMetaData.CoverArtImage))
-        #     pixmap = pixmap.scaled(
-        #         int(pixmap.width() / 3), int(pixmap.height() / 3)
-        #     )
-        #     self.art.setPixmap(pixmap)
-        #     self.art.setContentsMargins(0, 32, 0, 5)
 
     def addScrollingItem(self, text):
         scrollingItem = QListWidgetItem(self.musiclist)
