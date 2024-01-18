@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 from mutagen.mp3 import MP3
 from PyQt5.QtCore import Qt, QUrl, QDir
 from PyQt5.QtWidgets import (
@@ -354,6 +355,9 @@ class Window(QMainWindow):
         widget.setLayout(container)
         self.setCentralWidget(widget)
 
+        # Load the playlist from file when the application starts
+        self.loadPlaylist()
+
     def updateBackground(self):
         # Blend the two background images based on current opacity
         blendedImage = QImage(self.bgImage2.size(), QImage.Format_ARGB32)
@@ -386,6 +390,32 @@ class Window(QMainWindow):
     def resizeEvent(self, event):
         self.updateBackground()
         super().resizeEvent(event)
+
+    def closeEvent(self, event):
+        # Save the playlist to a file when the application is closed
+        self.savePlaylist()
+        super().closeEvent(event)
+
+    def savePlaylist(self):
+        # Save the playlist items to a file
+        playlist_file = "PyQt5-Music-Player/playlist.json"
+        with open(playlist_file, "w") as file:
+            playlist_data = [
+                self.playlist.media(i).canonicalUrl().toString()
+                for i in range(self.playlist.mediaCount())
+            ]
+            json.dump(playlist_data, file)
+
+    def loadPlaylist(self):
+        # Load the playlist items from a file
+        playlist_file = "PyQt5-Music-Player/playlist.json"
+        if os.path.exists(playlist_file):
+            with open(playlist_file, "r") as file:
+                playlist_data = json.load(file)
+                for url in playlist_data:
+                    self.playlist.addMedia(QMediaContent(QUrl(url)))
+                    track_name = url.rpartition("/")[2].rpartition(".")[0]
+                    self.addScrollingItem(track_name)
 
     # Volume control
     def _volume(self, val=70):
@@ -532,6 +562,9 @@ class Window(QMainWindow):
 
         self.musiclist.setCurrentRow(0)
         self.playlist.setCurrentIndex(0)
+
+        # Save the updated playlist after adding new files
+        self.savePlaylist()
 
     # Methods for the control buttons
     def _prev(self):
