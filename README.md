@@ -16,7 +16,7 @@ Hey, hey, hey! It's your favorite out-of-touch bro dropping something cooler tha
 ## Upcoming Features
 - **GUI Integration for Recommendation System**: It's like it's almost there but decided to take a detour. We're bringing it back, though. Soon.
 - **More Music, Less Daft Punk Overkill**: We're expanding beyond Daft Punk because, let's be honest, too much of a good thing is my entire social strategy.
-
+- **More Themes, More Daft Punk Helmets**: We're bringing the spirit of different Daft Punk eras - 'Voyager', 'Encore', 'Robot', 'Winner', and 'Tron' - right to your screen. Each theme captures the essence of these iconic periods. Get ready for a visual experience as diverse as their music. Take a peek:
 
 ![eras](https://i.redd.it/fzhp3srcbmr41.png)
 
