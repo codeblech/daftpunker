@@ -83,8 +83,16 @@ class Window(QMainWindow):
 
         self.setFixedSize(1600, 808)
 
-        # Set the background image
-        self.backgroundImage = QImage("PyQt5-Music-Player/daft_punk.png")
+        # Load both images
+        self.backgroundImage1 = QImage("PyQt5-Music-Player/daft_punk.png")
+        self.backgroundImage2 = QImage("PyQt5-Music-Player/daft_punk_2.jpg")
+        self.useFirstImage = True  # Flag to toggle between images
+
+        # Timer to switch images
+        self.switchImageTimer = QTimer(self)
+        self.switchImageTimer.timeout.connect(self.toggleBackgroundImage)
+        self.switchImageTimer.start(2000)  # Switch every 2000 milliseconds (2 seconds)
+
         self.updateBackground()
 
         # Create some variables
@@ -346,8 +354,18 @@ class Window(QMainWindow):
         widget.setLayout(container)
         self.setCentralWidget(widget)
 
+    def toggleBackgroundImage(self):
+        # Toggle the flag
+        self.useFirstImage = not self.useFirstImage
+        # Update the background
+        self.updateBackground()
+
     def updateBackground(self):
-        sImage = self.backgroundImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
+        # Choose the image based on the flag
+        if self.useFirstImage:
+            sImage = self.backgroundImage1.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
+        else:
+            sImage = self.backgroundImage2.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
