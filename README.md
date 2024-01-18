@@ -1,7 +1,7 @@
 # Daft Punk Themed Music Player 🤖🎵
 
 ## Introduction
-Hey, hey, hey! It's your favorite out-of-touch admin dropping something cooler than being the Michael Jordan of being in your room. Introducing the **Daft Punk Themed Music Player**. This ain't just any music player; it's like if Daft Punk decided to host a party in your device. It's the ultimate chill, but with a twist of tech.
+Hey, hey, hey! It's your favorite out-of-touch bro dropping something cooler than being the Michael Jordan of being in your room. Introducing the **Daft Punk Themed Music Player**. This ain't just any music player; it's like if Daft Punk decided to host a party in your device. It's the ultimate chill, but with a twist of tech.
 
 
 ![musicplayer](dp.gif)
