@@ -413,9 +413,12 @@ class Window(QMainWindow):
             with open(playlist_file, "r") as file:
                 playlist_data = json.load(file)
                 for url in playlist_data:
-                    self.playlist.addMedia(QMediaContent(QUrl(url)))
-                    track_name = url.rpartition("/")[2].rpartition(".")[0]
-                    self.addScrollingItem(track_name)
+                    if os.path.exists(
+                        QUrl(url).toLocalFile()
+                    ):  # Check if the file exists
+                        self.playlist.addMedia(QMediaContent(QUrl(url)))
+                        track_name = url.rpartition("/")[2].rpartition(".")[0]
+                        self.addScrollingItem(track_name)
 
     # Volume control
     def _volume(self, val=70):
