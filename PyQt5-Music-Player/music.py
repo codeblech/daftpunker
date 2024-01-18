@@ -128,7 +128,9 @@ class Window(QMainWindow):
         self.musiclist = QListWidget()
         self.musiclist.setFixedHeight(300)
         self.musiclist.setFixedWidth(370)
-        self.musiclist.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # Hide vertical scrollbar
+        self.musiclist.setVerticalScrollBarPolicy(
+            Qt.ScrollBarAlwaysOff
+        )  # Hide vertical scrollbar
         self.musiclist.setStyleSheet(
             "background-color: transparent; color: white; font-family: LED Dot-Matrix; font-weight: bold; font-size: 15pt;"
         )
@@ -191,6 +193,7 @@ class Window(QMainWindow):
         slider_frame.setLayout(slider_box)
 
         self.slider = QSlider(Qt.Horizontal)
+        self.slider.sliderReleased.connect(self.seek)
         slider_box.addWidget(self._timer)
         slider_box.addWidget(self.slider)
 
@@ -359,11 +362,16 @@ class Window(QMainWindow):
 
     # Sets position of slider
     def track_position(self, position):
-        self.slider.setValue(position)
+        if not self.slider.isSliderDown():
+            self.slider.setValue(position)
 
     # Duration of the track playing
     def duration(self, duration):
         self.slider.setRange(0, duration)
+
+    def seek(self):
+        position = self.slider.value()
+        self.player.setPosition(position)
 
     # Updates duration of track playing
     def timer(self):
