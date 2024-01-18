@@ -102,7 +102,6 @@ class Window(QMainWindow):
         self.playlist = QMediaPlaylist(self.player)
         self.player.setPlaylist(self.playlist)
 
-        # Create the status and track labels
         common_style = """
                         font-family: LED Dot-Matrix;
                         font-weight: bold;
@@ -498,7 +497,6 @@ class Window(QMainWindow):
         self.musiclist.clear()
         self.playlist.clear()
         self.play_btn.setText("Play")
-        self.status.setText("Status: ")
         pixmap = QPixmap()
         self.art.setPixmap(pixmap)
         self.dial.setSliderPosition(70)
@@ -543,18 +541,15 @@ class Window(QMainWindow):
         self.play_btn.setText("Play")
         self.playlist.setCurrentIndex(0)
         self.musiclist.setCurrentRow(0)
-        self.status.setText("Status: Now Stopped")
 
     def _state(self):
         if self.playlist.mediaCount() > 0:
             if self.player.state() != QMediaPlayer.PlayingState:
                 self.play_btn.setText("Pause")
-                # self.status.setText("Status: Now Playing")
                 self.player.play()
             else:
                 self.play_btn.setText("Play")
                 self.player.pause()
-                # self.status.setText("Status: Now Paused")
 
         else:
             pass
