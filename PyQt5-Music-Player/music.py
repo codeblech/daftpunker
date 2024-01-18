@@ -83,9 +83,17 @@ class Window(QMainWindow):
 
         self.setFixedSize(1600, 808)
 
-        # Set the background image
-        self.backgroundImage = QImage("PyQt5-Music-Player/daft_punk.png")
-        self.updateBackground()
+        # Initialize background images and transition attributes
+        self.bgImage1 = QImage("PyQt5-Music-Player/daft_punk.png")
+        self.bgImage2 = QImage("PyQt5-Music-Player/daft_punk_2.jpg")
+        self.bgOpacity = 1.0  # Start with first image fully visible
+        self.increasingOpacity = False  # Start by decreasing opacity
+        self.transitionSpeed = 0.01  # Adjust the speed of the transition here
+        self.transitionTimer = QTimer(self)
+        self.transitionTimer.timeout.connect(self.updateBackgroundTransition)
+        self.transitionTimer.start(
+            100
+        )  # Adjust the interval for smoother or faster transition
 
         # Create some variables
         self.url = QUrl()
@@ -347,10 +355,33 @@ class Window(QMainWindow):
         self.setCentralWidget(widget)
 
     def updateBackground(self):
-        sImage = self.backgroundImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
+        # Blend the two background images based on current opacity
+        blendedImage = QImage(self.bgImage2.size(), QImage.Format_ARGB32)
+        painter = QPainter(blendedImage)
+        painter.setOpacity(self.bgOpacity)
+        painter.drawImage(0, 0, self.bgImage1)
+        painter.setOpacity(1 - self.bgOpacity)
+        painter.drawImage(0, 0, self.bgImage2)
+        painter.end()
+
+        sImage = blendedImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
+
+    def updateBackgroundTransition(self):
+        if self.increasingOpacity:
+            self.bgOpacity += self.transitionSpeed  # Increase opacity
+            if self.bgOpacity >= 1:
+                self.bgOpacity = 1
+                self.increasingOpacity = False  # Switch direction
+        else:
+            self.bgOpacity -= self.transitionSpeed  # Decrease opacity
+            if self.bgOpacity <= 0:
+                self.bgOpacity = 0
+                self.increasingOpacity = True  # Switch direction
+
+        self.updateBackground()
 
     def resizeEvent(self, event):
         self.updateBackground()
